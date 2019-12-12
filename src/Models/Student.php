@@ -118,13 +118,15 @@ class Student {
             $stmt = $this->db->prepare($sql);
             $stmt->execute([$this->name, $this->board]);
 
-            $this->id = $this->db->lastInsertId();
+            $id = $this->db->lastInsertId();
 
             $sql = "INSERT INTO $this->gradesTable (`student_id`, `grade1`, `grade2`, `grade3`, `grade4`) VALUES ($this->id, :grade1, :grade2, :grade3, :grade4)";
             $stmt = $this->db->prepare($sql);
             $stmt->execute($this->grades);
 
             $this->db->commit();
+
+            $this->id = $id;
         } catch (\PDOException $e)
         {
             $this->db->rollBack();
