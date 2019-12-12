@@ -4,6 +4,11 @@ namespace App\Boards;
 
 class Csmb extends Board 
 {
+    /**
+     * Removes the minimal grade
+     *
+     * @return Csmb
+     */
     private function removeMinGrade()
     {
         if (count($this->grades) < 3)
@@ -16,6 +21,11 @@ class Csmb extends Board
         return $this;
     }
 
+    /**
+     * Calculates avrage and final result
+     *
+     * @return Csmb
+     */
     public function calculateResult()
     {
         $this->removeMinGrade()->avrage();
@@ -28,7 +38,12 @@ class Csmb extends Board
         return $this;
     }
 
-    public function send()
+    /**
+     * Renders the report
+     *
+     * @return \SimpleXMLElement
+     */
+    public function render()
     {
         $xml = new \SimpleXMLElement('<root/>');
         $arr = $this->toArray();
@@ -38,6 +53,13 @@ class Csmb extends Board
         return $xml->asXML();
     }
 
+    /**
+     * Adds nodes to XML
+     *
+     * @param \SimpleXMLElement $xml
+     * @param array $elements
+     * @return void
+     */
     private function addToXml(\SimpleXMLElement $xml, array $elements)
     {
         foreach ($elements as $key => $element)
@@ -45,6 +67,7 @@ class Csmb extends Board
             if (is_array($element))
             {
                 $node = $xml->addChild($key);
+                // do the recurison if element is an array
                 $this->addToXml($node, $element);
             } else 
             {

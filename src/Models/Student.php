@@ -3,13 +3,53 @@
 namespace App\Models;
 
 class Student {
+    /**
+     * Student table
+     *
+     * @var string
+     */
     private $studentsTable = 'students';
+
+    /**
+     * Grades table
+     *
+     * @var string
+     */
     private $gradesTable = 'grades';
+
+    /**
+     * Holds db connection
+     *
+     * @var PDO
+     */
     private $db;
     
+    /**
+     * Student id
+     *
+     * @var int|string
+     */
     public $id = null;
+
+    /**
+     * Students name
+     *
+     * @var string
+     */
     public $name;
+
+    /**
+     * Students board
+     *
+     * @var string
+     */
     public $board;
+
+    /**
+     * Students grades
+     *
+     * @var array
+     */
     private $grades = [
         'grade1' => null,
         'grade2' => null,
@@ -17,8 +57,16 @@ class Student {
         'grade4' => null,
     ];
 
+    /**
+     * Constructor
+     *
+     * @param string $name
+     * @param string $board
+     * @param array $grades
+     */
     public function __construct(string $name = null, string $board = null, array $grades = [])
     {
+        // helper function
         $this->db = getDbConnection();
 
         $this->name = $name;
@@ -26,19 +74,40 @@ class Student {
         $this->setGrades($grades);
     }
 
+    /**
+     * Sets grades
+     *
+     * @param array $grades
+     * @return Student
+     */
     public function setGrades(array $grades)
     {
         foreach($grades as $key => $value)
         {
-            $this->grades[$key] = $value;
+            if (array_key_exists($key, $this->grades))
+            {
+                $this->grades[$key] = $value;
+            }   
         }
+
+        return $this;
     }
 
+    /**
+     * Gets grades
+     *
+     * @return array $grades
+     */
     public function getGrades()
     {
         return $this->grades;
     }
 
+    /**
+     * Saves student to db
+     *
+     * @return Student
+     */
     public function save()
     {
         $this->db->beginTransaction();
@@ -60,8 +129,16 @@ class Student {
         {
             $this->db->rollBack();
         }
+
+        return $this;
     }
 
+    /**
+     * Finds student by id
+     *
+     * @param integer $id
+     * @return Student
+     */
     public function findById(int $id)
     {
         $sql = "SELECT students.*, grades.* FROM
@@ -87,6 +164,11 @@ class Student {
         return $this;
     }
 
+    /**
+     * Returns all of the students
+     *
+     * @return array
+     */
     public function all()
     {
         $sql = "SELECT students.*, grades.* FROM
