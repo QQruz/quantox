@@ -18,3 +18,11 @@ function getDbConnection() {
     
     return $db;
 }
+
+// dump and die for debug
+function dd($var) {
+    echo '<pre>';
+    var_dump($var);
+    echo '</pre>';
+    exit();
+}
