@@ -1,0 +1,11 @@
+{
+    "name": "qqruz/quantox",
+    "description": "test for quantox",
+    "type": "project",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\" : "src/"
+        }
+    }
+}
