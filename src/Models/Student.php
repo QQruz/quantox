@@ -120,7 +120,7 @@ class Student {
 
             $id = $this->db->lastInsertId();
 
-            $sql = "INSERT INTO $this->gradesTable (`student_id`, `grade1`, `grade2`, `grade3`, `grade4`) VALUES ($this->id, :grade1, :grade2, :grade3, :grade4)";
+            $sql = "INSERT INTO $this->gradesTable (`student_id`, `grade1`, `grade2`, `grade3`, `grade4`) VALUES ($id, :grade1, :grade2, :grade3, :grade4)";
             $stmt = $this->db->prepare($sql);
             $stmt->execute($this->grades);
 
