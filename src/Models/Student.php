@@ -86,4 +86,37 @@ class Student {
         
         return $this;
     }
+
+    public function all()
+    {
+        $sql = "SELECT students.*, grades.* FROM
+                students JOIN grades on students.id = grades.student_id";
+        
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute();
+
+        $results = [];
+        
+        if ($rows = $stmt->fetchAll())
+        {
+            foreach($rows as $row)
+            {
+                $student = new self;
+                $student->id = $row->id;
+                $student->name = $row->name;
+                $student->board = $row->board;
+        
+                foreach($student->grades as $grade => $value)
+                {
+                    $student->grades[$grade] = $row->$grade;
+                }
+
+                $results[] = $student;
+            }
+
+        }
+        
+        return $results;      
+    }
 }
